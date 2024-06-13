@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class Baseclass {
 
 	public static WebDriver driver;
+	public static String projectpath = System.getProperty("user.dir");// current user directory //general path
 	
 	public WebDriver getWebDriver() {
 		

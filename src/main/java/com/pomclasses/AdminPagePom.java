@@ -1,12 +1,17 @@
 package com.pomclasses;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.Duration;
 
+import org.apache.poi.EncryptedDocumentException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.baseclass.Baseclass;
+import com.utility.ExcelReader;
 
 public class AdminPagePom extends Baseclass {
 	
@@ -34,93 +39,79 @@ public class AdminPagePom extends Baseclass {
 	
 	@FindBy(xpath = "//li[@class='oxd-main-menu-item-wrapper']//a[contains(@href,'viewAdminModule')]")
 	private WebElement admin;
-			
+	
 	@FindBy(xpath = "(//input[@class='oxd-input oxd-input--active'])[2]")
 	private WebElement username;
-	
-	@FindBy(xpath = "((//div[text()='Admin'])[1]")
-	private WebElement usernametext;
 	
 	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[1]")
 	private WebElement userroleselect;
 	
-	@FindBy(xpath = "((//div[text()='Admin'])[2]")
-	private WebElement userroleselectoption;
-	
 	@FindBy(xpath = "//div[contains(@class,'oxd-autocomplete-text-input')]//input")
 	private WebElement employeename;
 	
-	@FindBy(xpath = "//div[text()='Pruthviraj Gharge']")
-	private WebElement employeenametext;
-	
 	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[2]")
 	private WebElement statusselect;
-	
-	@FindBy(xpath = "((//div[text()='Enabled'])[1]")
-	private WebElement statusselecttext;
 	
 	@FindBy(xpath = "//button[text()=' Reset ']")
 	private WebElement reset;
 
 	@FindBy(xpath = "//button[text()=' Search ']")
 	private WebElement search;
-
+		
 	@FindBy(xpath = "//button[text()=' Add ']")
 	private WebElement adduserpage;
 	
-	public void clickOnAdmin() throws InterruptedException {
-		System.out.println(admin.isDisplayed());
-		admin.click();
-		Thread.sleep(Duration.ofSeconds(10));
-	}
+	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[2]")
+	private WebElement adduserrole;
+	
+	@FindBy(xpath = "//div[contains(@class,'oxd-autocomplete-text-input')]//input")
+	private WebElement addemployeename;
+	
+	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[2]")
+	private WebElement addstatus;
+	
+	@FindBy(xpath = "(//input[@class='oxd-input oxd-input--active'])[2]")
+	private WebElement addusername;
+	
+	@FindBy(xpath = "(//input[@type='password'])[1]")
+	private WebElement addpassword;
+	
+	@FindBy(xpath = "(//input[@type='password'])[2]")
+	private WebElement addconfirmpassword;
+	
+	@FindBy(xpath = "//button[text()=' Cancel ']")
+	private WebElement addcancelbutton;
 
-	public void setUsername (String text) {
+	@FindBy(xpath = "//button[text()=' Save ']")
+	private WebElement addsavebutton;
+	
+	
+	public void addUserDetails() {
 		
-		username.sendKeys(text);
-				
+		Actions act = new Actions(driver);
+		
+		act.click(adduserpage).build().perform();
+		act.click(adduserrole).build().perform();
+		act.sendKeys(addemployeename, "").build().perform();
+		act.click(addstatus).build().perform();
+		act.sendKeys(addusername, "").build().perform();
+		act.sendKeys(addpassword, "").build().perform();
+		act.sendKeys(addconfirmpassword, "").build().perform();
+		act.click(addsavebutton).build().perform();
+		
+		act.sendKeys(username, "").build().perform();
+		act.click(userroleselect).build().perform();
+		act.sendKeys(employeename, "").build().perform();
+		act.click(statusselect).build().perform();
+		act.click(search).build().perform();
+		
 	}
 	
-	public void clickOnSearchButton() throws InterruptedException {
-		search.click();
-		Thread.sleep(Duration.ofSeconds(5));
-	}
 	
-	/*public String selectuserrole() {
-		
-		Utility.webelementClick(userroleselect);
-		String text = Utility.getWebelementText(userroleselectoption);
-		return text;
-					
-	}
 	
-	public String setemployeename() {
-		
-		Utility.webelementClick(employeename);
-		String emptext = Utility.getWebelementText(employeenametext);
-		return emptext;
-		
-	}
 	
-	public String status() {
-		Utility.webelementClick(statusselect);
-		String statustext = Utility.getWebelementText(statusselecttext);
-		return statustext;
-		
-	}*/
 	
-	/*public void searchuser(String usertext) throws InterruptedException {
-		
-		//super.login(super.getusername(),super.getpassword());
-		
-		 * Actions act = new Actions(driver); act.moveToElement(admin); admin.click();
-		 */
-		
-		/*	Utility.setText(userroleselect,text);
-		Utility.setText(employeename, emptext);
-		Utility.setText(statusselect, statustext);
-		
-		search.click();
-	}*/
+	
 	
 	
 	
