@@ -23,7 +23,7 @@ public class ExcelReader extends Baseclass {
 	public static FileInputStream readExcelSheet(String excelname) throws FileNotFoundException {
 
 		// System.out.println(projectpath+"src/test/resources/data.xlsx");
-		FileInputStream fis = new FileInputStream(projectpath + "src/test/resources/" + excelname);
+		FileInputStream fis = new FileInputStream(projectpath + "/src/test/resources/resources/Data/" + excelname);
 		return fis;
 		
 	}
@@ -33,7 +33,7 @@ public class ExcelReader extends Baseclass {
 		return sh;
 	}
 
-	public Object getSingleCellData(Sheet sh, int rownum, int cellnum) {
+	public static Object getSingleCellData(Sheet sh, int rownum, int cellnum) {
 
 		if (sh.getRow(rownum).getCell(cellnum).getCellType().toString().equalsIgnoreCase("String"))
 			return sh.getRow(rownum).getCell(cellnum).getStringCellValue();
@@ -42,13 +42,13 @@ public class ExcelReader extends Baseclass {
 			return sh.getRow(rownum).getCell(cellnum).getNumericCellValue();
 	}
 
-	public Map getRowData(Sheet sh, int rownum) {
+	public static Map getRowData(Sheet sh, int rownum) {
 
 		Map<String, Object> rowData = new HashMap<>();
 		int cellnum = sh.getRow(rownum).getLastCellNum();
 		for (int i = 0; i < cellnum; i++) {
 
-			if (sh.getRow(rownum).getCell(cellnum).getCellType().toString().equalsIgnoreCase("String"))
+			if (sh.getRow(rownum).getCell(i).getCellType().toString().equalsIgnoreCase("String"))
 				rowData.put(sh.getRow(0).getCell(i).getStringCellValue(),
 						sh.getRow(rownum).getCell(i).getStringCellValue());
 			else

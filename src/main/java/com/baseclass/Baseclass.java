@@ -10,7 +10,7 @@ public class Baseclass {
 	public static WebDriver driver;
 	public static String projectpath = System.getProperty("user.dir");// current user directory //general path
 	
-	public WebDriver getWebDriver() {
+	public WebDriver launchWeb() {
 		
 		driver = new ChromeDriver();
 		driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");

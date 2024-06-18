@@ -1,30 +1,27 @@
 package com.pomclasses;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
-import org.apache.poi.EncryptedDocumentException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.baseclass.Baseclass;
-import com.utility.ExcelReader;
+import com.utility.Utility;
 
 public class AdminPagePom extends Baseclass {
-	
+
 	public AdminPagePom() {
-	
-		PageFactory.initElements(getWebDriver(),this);// implementing pageobject model in selenium framework
-		
-		//PageFactory.initElements(driver, this) statement initializes the page element 
-			//so that you can work directly on the element without getting the NullPointerException 
-			//(since the page object has been initialized implicitly).
+
+		PageFactory.initElements(driver, this);// implementing pageobject model in selenium framework
+
+		// PageFactory.initElements(driver, this) statement initializes the page element
+		// so that you can work directly on the element without getting the
+		// NullPointerException
+		// (since the page object has been initialized implicitly).
 	}
-	
-	
+
 	// user managment page:-
 	@FindBy(xpath = "//span[contains(text(),'User Management ')]//parent::li")
 	private WebElement usermanagment;
@@ -34,77 +31,105 @@ public class AdminPagePom extends Baseclass {
 
 	@FindBy(xpath = "//button[@title='Help']")
 	private WebElement help;
-	
-	//user page :- 
-	
+
+	// user page :-
+
 	@FindBy(xpath = "//li[@class='oxd-main-menu-item-wrapper']//a[contains(@href,'viewAdminModule')]")
-	private WebElement admin;
-	
+	private WebElement adminpagelink;
+
 	@FindBy(xpath = "(//input[@class='oxd-input oxd-input--active'])[2]")
 	private WebElement username;
-	
+
 	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[1]")
 	private WebElement userroleselect;
-	
+
 	@FindBy(xpath = "//div[contains(@class,'oxd-autocomplete-text-input')]//input")
 	private WebElement employeename;
-	
+
 	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[2]")
 	private WebElement statusselect;
-	
+
 	@FindBy(xpath = "//button[text()=' Reset ']")
 	private WebElement reset;
 
 	@FindBy(xpath = "//button[text()=' Search ']")
 	private WebElement search;
-		
+
 	@FindBy(xpath = "//button[text()=' Add ']")
-	private WebElement adduserpage;
-	
-	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[2]")
+	private WebElement adduserbutton;
+
+	@FindBy(xpath = "(//div[contains(@class,'select-text--active')])[1]")
 	private WebElement adduserrole;
-	
+
 	@FindBy(xpath = "//div[contains(@class,'oxd-autocomplete-text-input')]//input")
 	private WebElement addemployeename;
-	
-	@FindBy(xpath = "(//div[contains(text(),'-- Select --')])[2]")
+
+	@FindBy(xpath = "(//div[contains(@class,'select-text--active')])[2]")
 	private WebElement addstatus;
-	
+
 	@FindBy(xpath = "(//input[@class='oxd-input oxd-input--active'])[2]")
 	private WebElement addusername;
-	
+
 	@FindBy(xpath = "(//input[@type='password'])[1]")
 	private WebElement addpassword;
-	
+
 	@FindBy(xpath = "(//input[@type='password'])[2]")
 	private WebElement addconfirmpassword;
-	
+
 	@FindBy(xpath = "//button[text()=' Cancel ']")
 	private WebElement addcancelbutton;
 
 	@FindBy(xpath = "//button[text()=' Save ']")
 	private WebElement addsavebutton;
+
+	@FindBy(css = "div[role='option'] span")
+	private List<WebElement> roleselect;
 	
+	@FindBy(css = "div[role='option'] span")
+	private List<WebElement> statusselectopt;
 	
-	public void addUserDetails() {
-		
-		Actions act = new Actions(driver);
-		
-		act.click(adduserpage).build().perform();
-		act.click(adduserrole).build().perform();
-		act.sendKeys(addemployeename, "").build().perform();
-		act.click(addstatus).build().perform();
-		act.sendKeys(addusername, "").build().perform();
-		act.sendKeys(addpassword, "").build().perform();
-		act.sendKeys(addconfirmpassword, "").build().perform();
-		act.click(addsavebutton).build().perform();
-		
-		act.sendKeys(username, "").build().perform();
-		act.click(userroleselect).build().perform();
-		act.sendKeys(employeename, "").build().perform();
-		act.click(statusselect).build().perform();
-		act.click(search).build().perform();
-		
+
+	public void gotoAdminPage() {
+		Utility.webelementClick(adminpagelink);
+	}
+
+	public void addUser() {
+		Utility.webelementClick(adduserbutton);
+	}
+
+	public void setUserRole(String role) {
+		Utility.getActionClass().clickAndHold(adduserrole)
+						.pause(Duration.ofSeconds(1)).build().perform();
+
+		for (WebElement selectRole : roleselect) {
+			if (selectRole.getText().equalsIgnoreCase(role)) {
+				Utility.webelementClick(selectRole);
+			}
+		}
+	}
+
+	public void setEmployeename(String empname) {
+		Utility.setText(addemployeename, empname);
+	}
+
+	public void setUserStatus(String userStatus) {
+
+		Utility.getActionClass().clickAndHold(addstatus)
+								.pause(Duration.ofSeconds(1)).build().perform();
+
+		for (WebElement selectStatus : statusselectopt) {
+			if (selectStatus.getText().equalsIgnoreCase(userStatus)) {
+				Utility.webelementClick(selectStatus);
+				break;
+			}
+		}
+
+	}
+	
+	public void setUserDetails(String username, String pass, String confPass) {
+		Utility.setText(addusername, confPass);
+		Utility.setText(addpassword, pass);
+		Utility.setText(addconfirmpassword, confPass);
 	}
 	
 	
@@ -115,6 +140,11 @@ public class AdminPagePom extends Baseclass {
 	
 	
 	
+	
+	
+	
+	
+
 	@FindBy(xpath = "//div[@role='columnheader']//input[@type='checkbox']")
 	private WebElement usernamecheckbox;
 
@@ -168,9 +198,8 @@ public class AdminPagePom extends Baseclass {
 	@FindBy(xpath = "//button[text()=' Save ']")
 	private WebElement adminsavebutton;
 
-		
 	// Job- job title page:-
-	
+
 	@FindBy(xpath = "//span[contains(text(),'Job ')]//parent::li")
 	private WebElement job;
 
@@ -216,7 +245,7 @@ public class AdminPagePom extends Baseclass {
 	private WebElement jobtitlesavebutton;
 
 	// Job- pay grade page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Pay Grades')]//parent::li")
 	private WebElement playgrades;
 
@@ -246,10 +275,10 @@ public class AdminPagePom extends Baseclass {
 	private WebElement checkboxcurrency;
 
 	// Job- Employment status page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Employment Status')]//parent::li")
 	private WebElement employmentstatus;
-	
+
 	@FindBy(xpath = "//button[text()=' Add ']")
 	private WebElement addemploymentstatus;
 
@@ -283,7 +312,7 @@ public class AdminPagePom extends Baseclass {
 	private WebElement fulltimecontractsavebutton;
 
 	// Job- Job categories page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Job Categories')]//parent::li")
 	private WebElement jobcategories;
 
@@ -326,10 +355,10 @@ public class AdminPagePom extends Baseclass {
 	private WebElement savebuttonlaborersandhelpers;
 
 	// Job- work shift page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Work Shifts')]//parent::li")
 	private WebElement workshifts;
-	
+
 	@FindBy(xpath = "//button[text()=' Add ']")
 	private WebElement addeworkshift;
 
@@ -375,10 +404,10 @@ public class AdminPagePom extends Baseclass {
 	private WebElement savebuttonedittwilightworkshift;
 
 	// Organization-general information page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'General Information')]//parent::li")
 	private WebElement generalinformation;
-	
+
 	@FindBy(xpath = "//span[contains(text(),'Organization ')]//parent::li")
 	private WebElement organization;
 
@@ -395,7 +424,7 @@ public class AdminPagePom extends Baseclass {
 	private WebElement savebuttongeneralinformation;
 
 	// Organization-locations page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Locations')]//parent::li")
 	private WebElement locations;
 
@@ -453,7 +482,7 @@ public class AdminPagePom extends Baseclass {
 	private WebElement savebuttonedithqcausa;
 
 	// Organization Structure page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Structure')]//parent::li")
 	private WebElement structure;
 
@@ -512,10 +541,10 @@ public class AdminPagePom extends Baseclass {
 	private WebElement addbuttontechops;
 
 	// qualification-Skill page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Skills')]//parent::li")
 	private WebElement skills;
-	
+
 	@FindBy(xpath = "//span[contains(text(),'Qualifications ')]//parent::li")
 	private WebElement qualifications;
 
@@ -558,7 +587,7 @@ public class AdminPagePom extends Baseclass {
 	private WebElement savebuttoneditcopywritting;
 
 	// qualification-education page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Education')]//parent::li")
 	private WebElement education;
 
@@ -601,7 +630,7 @@ public class AdminPagePom extends Baseclass {
 	private WebElement savebuttoneditcollegeundergraduate;
 
 	// qualification-licenses page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Licenses')]//parent::li")
 	private WebElement licenses;
 
@@ -644,10 +673,10 @@ public class AdminPagePom extends Baseclass {
 	private WebElement savebuttoneditcism;
 
 	// Languages Page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Languages')]//parent::li")
 	private WebElement languages;
-	
+
 	@FindBy(xpath = "(//input[@type='checkbox'])[1]")
 	private WebElement Name_checkbox;
 
@@ -768,10 +797,10 @@ public class AdminPagePom extends Baseclass {
 	private WebElement ADD_button;
 
 	// Memberships page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Memberships')]//parent::li")
 	private WebElement memberships;
-	
+
 	@FindBy(xpath = "(//input[@type='checkbox'])[1]")
 	private WebElement Membership_checkbox;
 
@@ -805,12 +834,12 @@ public class AdminPagePom extends Baseclass {
 	@FindBy(xpath = "//button[text()=' Add ']")
 	private WebElement ADD_button_ACCA;
 	// Same x-path of British computer society(BCS),CIM & CIMA...............
-	
+
 	// Nationalities page x-path:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Nationalities')]//parent::li")
 	private WebElement nationalities;
-	
+
 	@FindBy(xpath = "(//input[@type='checkbox'])[1]")
 	private WebElement Nationality_checkbox;
 
@@ -870,7 +899,7 @@ public class AdminPagePom extends Baseclass {
 	// Same x-path to all Natinality field options only change index no.
 
 	// Corporate Branding Page.......
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Corporate Branding')]//parent::li")
 	private WebElement corporatebranding;
 
@@ -913,15 +942,15 @@ public class AdminPagePom extends Baseclass {
 	@FindBy(xpath = "//button[text()=' Publish ']")
 	private WebElement Publish_button;
 	// Configuration Page xpath..........
-	
+
 	@FindBy(xpath = "//span[contains(text(),'Configuration ')]//parent::li")
 	private WebElement configuration;
-	
+
 	// Email Configuration page:-
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Email Configuration')]//parent::li")
 	private WebElement emailconfiguration;
-	
+
 	@FindBy(xpath = "//a[text()='Email Configuration']")
 	private WebElement Email_Configuration_link;
 
@@ -948,12 +977,12 @@ public class AdminPagePom extends Baseclass {
 
 	@FindBy(xpath = "//button[text()=' Save ']")
 	private WebElement Save_button;
-	
+
 	// Email Subscriptions page
-	
+
 	@FindBy(xpath = "//a[contains(text(),'Email Subscriptions')]//parent::li")
 	private WebElement emailsubscriptions;
-	
+
 	@FindBy(xpath = "//a[text()='Email Subscriptions']")
 	private WebElement Email_Subscriptions_link;
 
@@ -986,34 +1015,34 @@ public class AdminPagePom extends Baseclass {
 
 	@FindBy(xpath = "(//div[@class='oxd-switch-wrapper'])[5]")
 	private WebElement Leave_Rejections_wrapperSwich;
-	
-	//Localization Page:- 
-	
+
+	// Localization Page:-
+
 	@FindBy(xpath = "//a[contains(text(),'Localization')]//parent::li")
 	private WebElement localization;
-	
-	//Language Packages page:- 
-	
+
+	// Language Packages page:-
+
 	@FindBy(xpath = "//a[contains(text(),'Language Packages')]//parent::li")
 	private WebElement languagepackages;
 
-	//Modules page:-
-	
+	// Modules page:-
+
 	@FindBy(xpath = "//a[contains(text(),'Modules')]//parent::li")
 	private WebElement modules;
-	
-	//social media authentication page:-
-	
+
+	// social media authentication page:-
+
 	@FindBy(xpath = "//a[contains(text(),'Social Media Authentication')]//parent::li")
 	private WebElement socialmediaauthentication;
-	
-	//Register Oauth client page:-
-	
+
+	// Register Oauth client page:-
+
 	@FindBy(xpath = "//a[contains(text(),'Register OAuth Client')]//parent::li")
 	private WebElement registeraouthclient;
-	
-	//LDAP configuration page :-
-	
+
+	// LDAP configuration page :-
+
 	@FindBy(xpath = "//a[contains(text(),'LDAP Configuration')]//parent::li")
 	private WebElement ldapconfiguration;
 }

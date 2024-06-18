@@ -1,17 +1,19 @@
 package com.pomclasses;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.baseclass.Baseclass;
+import com.utility.Utility;
 
 public class LoginPagePom extends Baseclass {
 	
+
+	
 	public LoginPagePom() {
 		
-		PageFactory.initElements(getWebDriver(),this);
+		PageFactory.initElements(driver,this);
 		
 	}
 	
@@ -38,24 +40,29 @@ public class LoginPagePom extends Baseclass {
 	private WebElement invalidloginerrormsg;
 	
 	public String getusername() {
-		String userName = usernameText.getText();
+		
+		String userName = Utility.getWebelementText(usernameText);
 		return userName.substring(userName.indexOf('A'));
 	}
 	
 	public String getpassword() {
-		String password = usernameText.getText();
+		String password = Utility.getWebelementText(passwordText);
 		return password.substring(password.lastIndexOf('a'));
 	}
 	
 	public String getinvalidloginerrormsg() {
-		return invalidloginerrormsg.getText();
+		String invalidpass = Utility.getWebelementText(invalidloginerrormsg);
+		return invalidpass;
 	}
 	
-	public void login(String userName,String password ) {
+	public AdminPagePom login(String userName,String password ) {
 		
-		usernameInput.sendKeys(userName);
-		passwordInput.sendKeys(password);
-		loginbutton.click();
+		Utility.setText(usernameInput, userName);
+		Utility.setText(passwordInput, password);
+		Utility.webelementClick(loginbutton);
+		return new AdminPagePom();
+		
+		
 		
 	}
 	
