@@ -9,13 +9,16 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.baseclass.Baseclass;
 import com.pomclasses.AdminPagePom;
 import com.pomclasses.LoginPagePom;
 import com.utility.ExcelReader;
+import com.utility.Utility;
 
+@Listeners(MyListner.class)
 public class AdminPageTest extends Baseclass {
 
 	@BeforeClass
@@ -26,7 +29,7 @@ public class AdminPageTest extends Baseclass {
 
 	@AfterClass
 	public void teardown() {
-		driver.close();
+		//driver.close();
 	}
 
 	@Test
@@ -47,6 +50,8 @@ public class AdminPageTest extends Baseclass {
 
 		System.out.println(userData.get("User_Role").toString());
 		adminpagepom.setUserRole(userData.get("User_Role").toString());
+		
+		//Utility.getScreenShot("addUserTest");
 		
 		adminpagepom.setUserStatus(userData.get("Status").toString());
 

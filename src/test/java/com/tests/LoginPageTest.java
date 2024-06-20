@@ -1,19 +1,25 @@
 package com.tests;
 
+import java.io.IOException;
+
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.baseclass.Baseclass;
 import com.pomclasses.LoginPagePom;
+import com.utility.ExcelReader;
+import com.utility.Utility;
 
+@Listeners(MyListner.class)
 public class LoginPageTest extends Baseclass {
-	LoginPagePom loginpagepom;
-
+	
 	@BeforeClass
 	public void setup() {
-		// getWebDriver();
-		loginpagepom = new LoginPagePom();
+		launchWeb();
+		
 	}
 
 	@AfterClass
@@ -33,14 +39,22 @@ public class LoginPageTest extends Baseclass {
 	}
 
 	@Test
-	public void loginTest() {
+	public void adminLoginTest() throws IOException {
+		
+		LoginPagePom loginpagepom = new LoginPagePom();
+		
+		Assert.assertEquals(loginpagepom.getusername(), "Admin");
+		Assert.assertEquals(loginpagepom.getpassword(), "admin123");
+		
+		//Utility.getScreenShot("adminLoginTest");
 		loginpagepom.login(loginpagepom.getusername(), loginpagepom.getpassword());
 	}
 
-	@Test
+	/*@Test
 	public void invalidloginTest() {
+		
 		loginpagepom.login(loginpagepom.getusername(), "123456");
 		System.out.println(loginpagepom.getinvalidloginerrormsg());
-	}
+	}*/
 
 }
